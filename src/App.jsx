@@ -4,6 +4,8 @@ import Item from "./components/Item";
 import { useState } from "react";
 
 function App() {
+  const shopName = "Jersey Shop Made with React JS";
+
   const [items, setItems] = useState(
   [
     {
@@ -91,7 +93,11 @@ function App() {
 
   const itemsInBag = items.filter((item) => item.isInBag);
 
-  const shopName = "Jersey Shop Made with React JS";
+  function selectHandler(id) {
+    let item = items.filter(item => item.id === id)[0]
+    item.isInBag = !item.isInBag
+    setItems(items.map(el => el.id === id ? item : el))
+  }
 
   return (
     <>
@@ -99,12 +105,12 @@ function App() {
         <h4>{shopName}</h4>
 
         {items.map((item => 
-          <Item selectProduct={(id) => setItems([])}
+          <Item selectProduct={(id) => selectHandler(id)}
           item={item} key={item.id} />
         ))}
       </section>
 
-      {itemsInBag.length > 0 && <OrderDetails />}
+      {itemsInBag.length > 0 && <OrderDetails itemsInBag={itemsInBag} />}
     </>
   );
 }
